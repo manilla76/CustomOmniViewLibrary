@@ -1,0 +1,77 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:bl="clr-namespace:CustomOmniViewLibrary;assembly=CustomOmniViewLibrary"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:thermoWpfWidgets="clr-namespace:ThermoWpfWidgets;assembly=ThermoWpfWidgets"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <bl:OmniViewCustom/>
+    </Window.DataContext>
+    <Grid>
+        <StackPanel>
+            <telerik:RadGridView ItemsSource="{Binding Product1}" ShowGroupPanel="False" AutoGenerateColumns="False">
+                <telerik:RadGridView.GroupDescriptors>
+                    <telerik:GroupDescriptor Member="ProductName" />
+                </telerik:RadGridView.GroupDescriptors>
+                <telerik:RadGridView.Columns>
+                    <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" IsReadOnly="True" />
+                    <telerik:GridViewDataColumn DataMemberBinding="{Binding Value}" IsReadOnly="True" />
+                    <telerik:GridViewDataColumn Header ="Upper Limit" DataMemberBinding="{Binding HighAlarm}" IsReadOnly="False" />
+                    <telerik:GridViewDataColumn Header="Lower Limit" DataMemberBinding="{Binding LowAlarm}" IsReadOnly="False" />
+                    <telerik:GridViewCheckBoxColumn Header="Too High" DataMemberBinding="{Binding IsHighAlarm}" IsReadOnly="True"/>
+                    <telerik:GridViewCheckBoxColumn Header="Too Low" DataMemberBinding="{Binding IsLowAlarm}" IsReadOnly="True" />
+                </telerik:RadGridView.Columns>
+            </telerik:RadGridView>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Dust Group" Margin="0,0,5,0"/>
+                <TextBox MinWidth="100" Text="{Binding DustGroup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=3000}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                <TextBlock Text="Dust Tag"/>
+                <TextBox MinWidth="100" Text="{Binding DustTag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=3000}"/>
+            </StackPanel>
+            <TextBox Text="{Binding MyProperty, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBox Text="{Binding TestDP.Value, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Content="Increase Tons" Command="{Binding ChangeRecipeCommand}"/>
+            <TextBlock Text="Product 1" FontSize="20"/>
+            <ListView ItemsSource="{Binding Product1}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="2,0,5,0" Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding IsHighAlarm}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <DataGrid ItemsSource="{Binding Product1}" CanUserReorderColumns="False" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=OneWay}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Value" Binding="{Binding Value, Mode=OneWay}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Upper Limit" Binding="{Binding HighAlarm}" IsReadOnly="False"/>
+                    <DataGridTextColumn Header="Lower Limit" Binding="{Binding LowAlarm}" IsReadOnly="False"/>
+                    <DataGridCheckBoxColumn Header="High Alarm" Binding="{Binding IsHighAlarm, Mode=OneWay}" IsReadOnly="True"/>
+                    <DataGridCheckBoxColumn Header="Low Alarm" Binding="{Binding IsLowAlarm, Mode=OneWay}" IsReadOnly="True"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <telerik:RadListBox ItemsSource="{Binding QcModifiers}">
+                <telerik:RadListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Qc, Mode=OneWay}"/>
+                            <TextBox Text="{Binding Modifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </telerik:RadListBox.ItemTemplate>
+            </telerik:RadListBox>
+        </StackPanel>
+        <TextBlock Text="{Binding Fault}" VerticalAlignment="Bottom"/>
+    </Grid>
+</Window>
